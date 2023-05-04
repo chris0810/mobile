@@ -12,15 +12,18 @@ let map = L.map("map").setView([
     stephansdom.lat, stephansdom.lng
 ], 12);
 
-map.locate({setView: true, maxZoom: 16});
+map.locate({setView: true, maxZoom: 16, watch: true, });
 
-function onLocationFound(evt) {
+let circle = L.circle([0,0],0).addTo(map);
+let marker = L.marker= L.marker([0,0]).addTo(map);
+map.on('LocationFound',function(evt) {
     
     let radius = Math.round(evt.accuracy);
-    L.marker(evt.latlng).addTo(map)
-        .bindPopup(`You are within ${radius} meters from this point`).openPopup();
+    marker.setLatLng(evt.latlgn)
+    marker.bindTooltio(`You are within ${radius} meters from this point`).openPopup();
 
-    L.circle(evt.latlng, radius).addTo(map);
+    circle.setLatLng(evt.latlng);
+    circle.setRadius(radius)
 }
 
 map.on('locationfound', onLocationFound);
