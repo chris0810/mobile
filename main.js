@@ -14,22 +14,23 @@ let map = L.map("map").setView([
 
 map.locate({setView: true, maxZoom: 16});
 
-function onLocationFound(e) {
-    var radius = e.accuracy;
+function onLocationFound(evt) {
+    
+    let radius = Math.round(evt.accuracy);
+    L.marker(evt.latlng).addTo(map)
+        .bindPopup(`You are within ${radius} meters from this point`).openPopup();
 
-    L.marker(e.latlng).addTo(map)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-    L.circle(e.latlng, radius).addTo(map);
+    L.circle(evt.latlng, radius).addTo(map);
 }
 
 map.on('locationfound', onLocationFound);
 
-function onLocationError(e) {
-    alert(e.message);
-}
+map.on('onLocationError', function(evt) {
+    console.log (evt)
+    alert(evt.message);
+});
 
-map.on('locationerror', onLocationError);
+//map.on('locationerror', onLocationError);
 // Hintergrundlayer
 let layerControl = L.control.layers({
     "BasemapAT Grau": L.tileLayer.provider("BasemapAT.grau").addTo(map),
