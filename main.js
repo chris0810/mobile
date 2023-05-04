@@ -15,20 +15,19 @@ let map = L.map("map").setView([
 map.locate({setView: true, maxZoom: 16, watch: true, });
 
 let circle = L.circle([0,0],0).addTo(map);
-let marker = L.marker= L.marker([0,0]).addTo(map);
+let marker = L.marker([0,0]).addTo(map);
 map.on('LocationFound',function(evt) {
     
     let radius = Math.round(evt.accuracy);
     marker.setLatLng(evt.latlgn)
-    marker.bindTooltio(`You are within ${radius} meters from this point`).openPopup();
+    marker.bindTooltip(`You are within ${radius} meters from this point`).openTooltip();
 
     circle.setLatLng(evt.latlng);
-    circle.setRadius(radius)
-}
+    circle.setRadius(radius);
+}),
 
-map.on('locationfound', onLocationFound);
 
-map.on('onLocationError', function(evt) {
+map.on('LocationError', function(evt) {
     console.log (evt)
     alert(evt.message);
 });
